@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"github.com/micro/go-log"
+	"github.com/micro/go-micro/errors"
 	"shopping/order/model"
 	"shopping/order/repository"
 	"github.com/bwmarrin/snowflake"
@@ -17,6 +18,12 @@ type Order struct{
 
 func (h *Order) Submit (ctx context.Context , req *order.SubmitRequest, rsp *order.Response) error{
 	log.Log("Received Product.Search request")
+
+	//查询商品的库存数量
+	productDetail,err := h.ProductCli.Detail(context.TODO() , &product.DetailRequest{Id:req.ProductId})
+	if productDetail.Product.Number < 1 {
+		return errors.BadRequest("go.micro.srv.order" , "库存不足")
+	}
 
 	node, err := snowflake.NewNode(1)
 	if err != nil {
@@ -34,6 +41,12 @@ func (h *Order) Submit (ctx context.Context , req *order.SubmitRequest, rsp *ord
 
 	if err = h.Order.Create(order); err != nil{
 		return err
+	}
+
+	//减库存
+	reduce,err := h.ProductCli.ReduceNumber(context.TODO() , &product.ReduceNumberRequest{Id:req.ProductId})
+	if reduce == nil || reduce.Code != "200" {
+		return errors.BadRequest("go.micro.srv.order" , err.Error())
 	}
 
 	rsp.Code = "200"
