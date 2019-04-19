@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package go.micro.srv.order;
+
+service OrderService {
+	rpc Submit(SubmitRequest) returns (Response) {}
+	rpc OrderDetail(OrderDetailRequest) returns (Response){}
+}
+
+message SubmitRequest {
+	uint32 productId = 1;
+	uint32 count = 2;
+}
+
+message Response{
+	string code = 1;
+	string msg = 2;
+}
+
+message OrderDetailRequest{
+	string orderId = 1;
+}

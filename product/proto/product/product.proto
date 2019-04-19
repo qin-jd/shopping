@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package go.micro.srv.product;
+
+service ProductService {
+	rpc Search (SearchRequest) returns (SearchResponse){}
+	rpc Detail (DetailRequest) returns (DetailResponse){}
+	rpc ReduceNumber (ReduceNumberRequest) returns (Response){}
+}
+
+message Product{
+	uint32 id = 1;
+	string name = 2;
+	string intro = 3;
+	uint32 number = 4;
+}
+
+message SearchRequest{
+	string name = 1;
+}
+
+message DetailRequest{
+	uint32 id = 1;
+}
+
+message ReduceNumberRequest{
+	uint32 id = 1;
+}
+
+message Response{
+    string code = 1;
+    string msg = 2;
+}
+
+message SearchResponse {
+	string code = 1;
+	string msg = 2;
+    repeated Product products = 3;
+}
+
+message DetailResponse{
+    string code = 1;
+    string msg = 2;
+    Product product = 3;
+}

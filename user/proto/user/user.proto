@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package go.micro.srv.user;
+
+service UserService {
+	rpc Register (RegisterRequest) returns (Response){}
+	rpc Login (LoginRequest) returns (Response){}
+	rpc UpdatePassword (UpdatePasswordRequest) returns (Response){}
+}
+
+message User {
+	uint32 id = 1;
+	string name = 2;
+	string phone = 3;
+	string password = 4;
+}
+
+message RegisterRequest{
+	User user = 1;
+}
+
+message LoginRequest{
+	string phone = 1;
+	string password = 2;
+}
+
+message UpdatePasswordRequest{
+	uint32 uid = 1;
+	string oldPassword = 2;
+	string newPassword = 3;
+	string confirmPassword = 4;
+}
+
+message Response {
+	string code = 1;
+	string msg = 2;
+}
+
