@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+import "user/proto/user/user.proto";
+import "product/proto/product/product.proto";
+
+package go.micro.srv.notification;
+
+service ProductService {
+	rpc NotifyOrder (NotifyOrderRequest) returns (Response){}
+}
+
+message NotifyOrderRequest{
+	go.micro.srv.user.User user = 1;
+	go.micro.srv.product.Product product = 2;
+}
+
+message SubmitRequest {
+	uint32 productId = 1;
+	uint32 count = 2;
+	uint32 uid = 3;
+}
+
+message Response{
+	string code = 1;
+	string msg = 2;
+}

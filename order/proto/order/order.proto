@@ -10,6 +10,7 @@ service OrderService {
 message SubmitRequest {
 	uint32 productId = 1;
 	uint32 count = 2;
+	uint32 uid = 3;
 }
 
 message Response{

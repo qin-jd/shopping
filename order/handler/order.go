@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"github.com/micro/go-log"
+	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/errors"
 	"shopping/order/model"
 	"shopping/order/repository"
@@ -14,10 +15,11 @@ import (
 type Order struct{
 	Order *repository.Order
 	ProductCli product.ProductService
+	Publisher micro.Publisher
 }
 
 func (h *Order) Submit (ctx context.Context , req *order.SubmitRequest, rsp *order.Response) error{
-	log.Log("Received Product.Search request")
+	log.Log("Received Order.Submit request")
 
 	//查询商品的库存数量
 	productDetail,err := h.ProductCli.Detail(context.TODO() , &product.DetailRequest{Id:req.ProductId})
@@ -37,6 +39,7 @@ func (h *Order) Submit (ctx context.Context , req *order.SubmitRequest, rsp *ord
 		Status:1,
 		OrderId:orderId,
 		ProductId:req.ProductId,
+		Uid : req.Uid,
 	}
 
 	if err = h.Order.Create(order); err != nil{
@@ -47,6 +50,11 @@ func (h *Order) Submit (ctx context.Context , req *order.SubmitRequest, rsp *ord
 	reduce,err := h.ProductCli.ReduceNumber(context.TODO() , &product.ReduceNumberRequest{Id:req.ProductId})
 	if reduce == nil || reduce.Code != "200" {
 		return errors.BadRequest("go.micro.srv.order" , err.Error())
+	}
+
+	//异步发送通知给用户订单信息
+	if err := h.Publisher.Publish(ctx , req);err != nil {
+		return errors.BadRequest("notification" , err.Error())
 	}
 
 	rsp.Code = "200"

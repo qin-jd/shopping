@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"fmt"
-	"github.com/micro/go-micro/errors"
 	"shopping/product/model"
 	"shopping/product/repository"
 
@@ -56,12 +55,9 @@ func (e *Product) ReduceNumber (ctx context.Context , req *product.ReduceNumberR
 	}
 
 	product.Number -= 1
-	if err := e.Repo.Db.Model(&model.Product{}).Updates(product).Error; err != nil{
+	log.Log("库存数量为:" , product.Number)
+	if err := e.Repo.Db.Model(&model.Product{}).Where("id = ?", product.ID).Update("number" , product.Number).Error; err != nil{
 		return err
-	}
-
-	if product.Number < 1 {
-		return errors.BadRequest("go.micro.srv.product", "该商品库存不足！")
 	}
 
 	rsp.Code = "200"
