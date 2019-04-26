@@ -22,7 +22,7 @@ func (h *Order) Submit (ctx context.Context , req *order.SubmitRequest, rsp *ord
 	log.Log("Received Order.Submit request")
 
 	//查询商品的库存数量
-	productDetail,err := h.ProductCli.Detail(context.TODO() , &product.DetailRequest{Id:req.ProductId})
+	productDetail,err := h.ProductCli.Detail(ctx , &product.DetailRequest{Id:req.ProductId})
 	if productDetail.Product.Number < 1 {
 		return errors.BadRequest("go.micro.srv.order" , "库存不足")
 	}
@@ -47,7 +47,7 @@ func (h *Order) Submit (ctx context.Context , req *order.SubmitRequest, rsp *ord
 	}
 
 	//减库存
-	reduce,err := h.ProductCli.ReduceNumber(context.TODO() , &product.ReduceNumberRequest{Id:req.ProductId})
+	reduce,err := h.ProductCli.ReduceNumber(ctx , &product.ReduceNumberRequest{Id:req.ProductId})
 	if reduce == nil || reduce.Code != "200" {
 		return errors.BadRequest("go.micro.srv.order" , err.Error())
 	}

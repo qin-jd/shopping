@@ -9,6 +9,9 @@ require (
 	github.com/micro/go-grpc v1.0.1
 	github.com/micro/go-log v0.1.0
 	github.com/micro/go-micro v1.1.0
+	github.com/micro/go-plugins v1.1.0
+	github.com/uber/jaeger-client-go v2.16.0+incompatible
+	go.opencensus.io v0.20.0
 	shopping/product v0.0.0
 )
 
