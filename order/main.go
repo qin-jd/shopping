@@ -5,7 +5,7 @@ import (
 	"github.com/micro/go-log"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/broker"
-	"os"
+	"net/http"
 
 	//"github.com/opentracing/opentracing-go"
 	//"os"
@@ -17,16 +17,18 @@ import (
 
 	"github.com/micro/go-plugins/broker/rabbitmq"
 
-	"go.opencensus.io/trace"
-	"go.opencensus.io/exporter/zipkin"
-	wrapperTrace "github.com/micro/go-plugins/wrapper/trace/opencensus"
-	openzipkin "github.com/openzipkin/zipkin-go"
-	zipkinHTTP "github.com/openzipkin/zipkin-go/reporter/http"
+	//"go.opencensus.io/trace"
+	//"go.opencensus.io/exporter/zipkin"
+	//wrapperTrace "github.com/micro/go-plugins/wrapper/trace/opencensus"
+	//openzipkin "github.com/openzipkin/zipkin-go"
+	//zipkinHTTP "github.com/openzipkin/zipkin-go/reporter/http"
 
 	//"github.com/opentracing/opentracing-go"
-	//jaegercfg "github.com/uber/jaeger-client-go/config"
-	//wrapperTrace "github.com/micro/go-plugins/wrapper/trace/opentracing"
+	jaegercfg "github.com/uber/jaeger-client-go/config"
+	wrapperTrace "github.com/micro/go-plugins/wrapper/trace/opentracing"
 
+	wrapperPrometheus "github.com/micro/go-plugins/wrapper/monitoring/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func main() {
@@ -58,7 +60,11 @@ func main() {
 		micro.Broker(b),
 		micro.WrapHandler(wrapperTrace.NewHandlerWrapper()),
 		micro.WrapClient(wrapperTrace.NewClientWrapper()),
+		micro.WrapHandler(wrapperPrometheus.NewHandlerWrapper()),
 	)
+
+	// boot prometheus
+	PrometheusBoot()
 
 	// Initialise service
 	service.Init()
@@ -85,21 +91,21 @@ func main() {
 }
 
 //trace opencensus+zipkin
-func TraceBoot() {
-	apiURL := "http://192.168.0.111:9411/api/v2/spans"
-	hostPort,_ := os.Hostname()
-	serviceName := "go.micro.srv.order"
-
-	localEndpoint, err := openzipkin.NewEndpoint(serviceName, hostPort)
-	if err != nil {
-		log.Fatalf("Failed to create the local zipkinEndpoint: %v", err)
-	}
-	reporter := zipkinHTTP.NewReporter(apiURL)
-	ze := zipkin.NewExporter(reporter, localEndpoint)
-	trace.RegisterExporter(ze)
-	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
-	return
-}
+//func TraceBoot() {
+//	apiURL := "http://192.168.0.111:9411/api/v2/spans"
+//	hostPort,_ := os.Hostname()
+//	serviceName := "go.micro.srv.order"
+//
+//	localEndpoint, err := openzipkin.NewEndpoint(serviceName, hostPort)
+//	if err != nil {
+//		log.Fatalf("Failed to create the local zipkinEndpoint: %v", err)
+//	}
+//	reporter := zipkinHTTP.NewReporter(apiURL)
+//	ze := zipkin.NewExporter(reporter, localEndpoint)
+//	trace.RegisterExporter(ze)
+//	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
+//	return
+//}
 
 //trace opentracing+zipkin
 //func TraceBoot() {
@@ -125,28 +131,40 @@ func TraceBoot() {
 
 
 //trace opentracing+Jaeger
-//func TraceBoot() {
-//	serviceName := "go.micro.srv.order"
-//	cfg := jaegercfg.Configuration{
-//		Sampler: &jaegercfg.SamplerConfig{
-//			Type:  "const",
-//			Param: 1,
-//		},
-//		Reporter: &jaegercfg.ReporterConfig{
-//			LogSpans: true,
-//			LocalAgentHostPort:  "192.168.0.111:9412",
-//		},
-//	}
-//
-//	closer, err := cfg.InitGlobalTracer(
-//		serviceName,
-//	)
-//	if err != nil {
-//		log.Fatalf("Could not initialize jaeger tracer: %s", err.Error())
-//		return
-//	}
-//	defer closer.Close()
-//
-//	//opentracing.InitGlobalTracer(tracer)
-//	return
-//}
+func TraceBoot() {
+	serviceName := "go.micro.srv.order"
+	cfg := jaegercfg.Configuration{
+		Sampler: &jaegercfg.SamplerConfig{
+			Type:  "const",
+			Param: 1,
+		},
+		Reporter: &jaegercfg.ReporterConfig{
+			LogSpans: true,
+			LocalAgentHostPort:  "192.168.0.111:9412",
+		},
+	}
+
+	closer, err := cfg.InitGlobalTracer(
+		serviceName,
+	)
+	if err != nil {
+		log.Fatalf("Could not initialize jaeger tracer: %s", err.Error())
+		return
+	}
+	defer closer.Close()
+
+	//opentracing.InitGlobalTracer(tracer)
+	return
+}
+
+
+func PrometheusBoot(){
+	http.Handle("/metrics", promhttp.Handler())
+	// 启动web服务，监听8085端口
+	go func() {
+		err := http.ListenAndServe("192.168.0.110:8085", nil)
+		if err != nil {
+			log.Fatal("ListenAndServe: ", err)
+		}
+	}()
+}
