@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/micro/go-config"
 	"github.com/micro/go-grpc"
 	"github.com/micro/go-log"
 	"github.com/micro/go-micro"
@@ -11,8 +12,8 @@ import (
 	//"os"
 	"shopping/order/handler"
 	"shopping/order/model"
-	"shopping/order/repository"
 	order "shopping/order/proto/order"
+	"shopping/order/repository"
 	product "shopping/product/proto/product"
 
 	"github.com/micro/go-plugins/broker/rabbitmq"
@@ -23,9 +24,9 @@ import (
 	//openzipkin "github.com/openzipkin/zipkin-go"
 	//zipkinHTTP "github.com/openzipkin/zipkin-go/reporter/http"
 
+	wrapperTrace "github.com/micro/go-plugins/wrapper/trace/opentracing"
 	//"github.com/opentracing/opentracing-go"
 	jaegercfg "github.com/uber/jaeger-client-go/config"
-	wrapperTrace "github.com/micro/go-plugins/wrapper/trace/opentracing"
 
 	wrapperPrometheus "github.com/micro/go-plugins/wrapper/monitoring/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -33,8 +34,16 @@ import (
 
 func main() {
 
+	//加载配置项
+	err := config.LoadFile("./config.json")
+	if err != nil {
+		log.Fatalf("Could not load config file: %s", err.Error())
+		return
+	}
+	conf := config.Map()
+
 	//db
-	db, err := CreateConnection()
+	db, err := CreateConnection(conf["mysql"].(map[string]interface{}))
 	defer db.Close()
 
 	db.AutoMigrate(&model.Order{})
@@ -47,7 +56,7 @@ func main() {
 
 	//broker
 	b := rabbitmq.NewBroker(
-		broker.Addrs("amqp://用户名:密码@主机host:端口port"),
+		broker.Addrs(config.Get("rabbitmq_addr").String("")),
 	)
 
 	// boot trace

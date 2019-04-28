@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/micro/go-config"
 	"github.com/micro/go-log"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-grpc"
@@ -13,7 +14,16 @@ import (
 
 func main() {
 
-	db,err := CreateConnection()
+	//加载配置项
+	err := config.LoadFile("./config.json")
+	if err != nil {
+		log.Fatalf("Could not load config file: %s", err.Error())
+		return
+	}
+	conf := config.Map()
+
+	//db
+	db, err := CreateConnection(conf["mysql"].(map[string]interface{}))
 	defer db.Close()
 
 	db.AutoMigrate(&model.User{})

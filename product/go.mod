@@ -12,9 +12,11 @@ require (
 	github.com/micro/go-grpc v1.0.1
 	github.com/micro/go-log v0.1.0
 	github.com/micro/go-micro v1.1.0
+	github.com/micro/go-plugins v1.1.0
+	github.com/opentracing-contrib/go-observer v0.0.0-20170622124052-a52f23424492 // indirect
+	github.com/opentracing/opentracing-go v1.1.0
+	github.com/openzipkin-contrib/zipkin-go-opentracing v0.3.5
 	go.etcd.io/bbolt v1.3.2 // indirect
-	launchpad.net/gocheck v0.0.0-20140225173054-000000000087 // indirect
-	sigs.k8s.io/structured-merge-diff v0.0.0-20190302045857-e85c7b244fd2 // indirect
 )
 
 replace github.com/golang/lint => golang.org/x/lint v0.0.0-20190409202823-959b441ac422

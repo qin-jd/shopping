@@ -32,7 +32,6 @@ require (
 	github.com/garyburd/redigo v1.6.0 // indirect
 	github.com/go-errors/errors v1.0.1 // indirect
 	github.com/go-ldap/ldap v3.0.2+incompatible // indirect
-	github.com/go-log/log v0.1.0
 	github.com/go-ole/go-ole v1.2.4 // indirect
 	github.com/gocql/gocql v0.0.0-20190319151216-6bdac5e86117 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect
@@ -76,6 +75,7 @@ require (
 	github.com/mattbaird/elastigo v0.0.0-20170123220020-2fe47fd29e4b // indirect
 	github.com/mattn/go-sqlite3 v1.10.0 // indirect
 	github.com/michaelklishin/rabbit-hole v1.5.0 // indirect
+	github.com/micro/go-config v0.14.0
 	github.com/micro/go-grpc v1.0.0
 	github.com/micro/go-log v0.1.0
 	github.com/micro/go-micro v1.0.0
@@ -87,9 +87,9 @@ require (
 	github.com/ryanuber/go-glob v1.0.0 // indirect
 	github.com/shirou/gopsutil v2.18.12+incompatible // indirect
 	github.com/shirou/w32 v0.0.0-20160930032740-bb4de0191aa4 // indirect
+	github.com/softlayer/softlayer-go v0.0.0-20180806151055-260589d94c7d
 	github.com/streadway/amqp v0.0.0-20190312223743-14f78b41ce6d // indirect
 	github.com/ugorji/go/codec v0.0.0-20190320090025-2dc34c0b8780 // indirect
-	go.etcd.io/bbolt v1.3.2 // indirect
 	go.opencensus.io v0.19.1 // indirect
 	golang.org/x/crypto v0.0.0-20190222235706-ffb98f73852f
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect

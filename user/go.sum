@@ -33,6 +33,7 @@ github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 h1:w+iIsaOQNcT7O
 github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78/go.mod h1:LmzpDX56iTiv29bbRTIsUNlaFfuhWRQBWjQdVyAevI8=
 github.com/Azure/go-autorest v10.7.0+incompatible h1:dB+dKSLGdJLEhU/FoZTSNSPMZuE5H4M5p5zgSct7qwM=
 github.com/Azure/go-autorest v10.7.0+incompatible/go.mod h1:r+4oMnoxhatjLLJ6zxSWATqVooLgysK6ZNox3g/xq24=
+github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/DataDog/datadog-go v0.0.0-20180822151419-281ae9f2d895/go.mod h1:LButxg5PwREeZtORoXG3tL4fMGNddJ+vMq1mwgfaqoQ=
 github.com/DataDog/datadog-go v0.0.0-20190315133836-a5d50a065561 h1:Syyc6fQ+rC+I0A41d8OZYsQitmQRIPFBJxE2eAfOKHs=
@@ -121,6 +122,7 @@ github.com/bgentry/speakeasy v0.1.0 h1:ByYyxL9InA1OWqxJqqp2A5pYHUrCiAL6K3J+LKSsQ
 github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
 github.com/bitly/go-hostpool v0.0.0-20171023180738-a3a6125de932 h1:mXoPYz/Ul5HYEDvkta6I8/rnYM5gSdSV2tJ6XbZuEtY=
 github.com/bitly/go-hostpool v0.0.0-20171023180738-a3a6125de932/go.mod h1:NOuUCSz6Q9T7+igc/hlvDOUdtWKryOrtFyIVABv/p7k=
+github.com/bitly/go-simplejson v0.5.0 h1:6IH+V8/tVMab511d5bn4M7EwGXZf9Hj6i2xSwkNEM+Y=
 github.com/bitly/go-simplejson v0.5.0/go.mod h1:cXHtHw4XUPsvGaxgjIAn8PhEWG9NfngEKAMDJEczWVA=
 github.com/blakesmith/ar v0.0.0-20150311145944-8bd4349a67f2/go.mod h1:PkYb9DJNAwrSvRx5DYA+gUcOIgTGVMNkfSCbZM8cWpI=
 github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 h1:DDGfHa7BWjL4YnC6+E63dPcxHo2sUxDIu8g3QgEJdRY=
@@ -592,6 +594,7 @@ github.com/micro/go-api v0.5.0/go.mod h1:itWuEfGqJNM5q5hct5LWYFSxwPZWyngnrRpgMQJ
 github.com/micro/go-api v0.6.0/go.mod h1:GR6fcdDJU0ltEcqyk+5GvKOzfYsGMLes2s58XfwKCVM=
 github.com/micro/go-bot v0.1.0/go.mod h1:wodQnZJedhANtriMfhCJa07WK6UnZE2QFNNRlmL3NoI=
 github.com/micro/go-config v0.13.3/go.mod h1:fVecLls1kW+EJsrlkJYqUmVoJa1epSHhsPMDXppELx0=
+github.com/micro/go-config v0.14.0 h1:US2/IWZBV1tkLiNLLKzkOxEIWpcSx3UgcRNR3j0rGC0=
 github.com/micro/go-config v0.14.0/go.mod h1:ijvLjvxxfDdlH5vO36ZBrzMVGpiGysuwFotX9F84cag=
 github.com/micro/go-grpc v0.9.0/go.mod h1:0oVU9jFs55Pcu4J5+ZI9c4MKgQBm0UWWSiPZyUdQPJo=
 github.com/micro/go-grpc v1.0.0 h1:FaNw95w78NAmETSbteJMkVrHd3F5LcZrslJ3FxAUV+Y=
